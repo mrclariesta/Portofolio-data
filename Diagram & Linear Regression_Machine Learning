@@ -1,0 +1,69 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+dataset = pd.read_csv('datas.csv')
+
+dataset
+
+print(dataset.describe())
+
+X = dataset.iloc[:, :-1].values
+Y = dataset.iloc[:, 1].values
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.1, random_state = 0)
+
+from sklearn.linear_model import LinearRegression
+regressor = LinearRegression()
+regressor.fit(X_train, Y_train)
+
+Y_pred = regressor.predict(X_test)
+
+plt.scatter(X_train, Y_train, color = 'red')
+plt.plot(X_train, regressor.predict(X_train), color = 'blue')
+plt.title('Berat Badan vs Jumlah Kalori (Training set)')
+plt.xlabel('Berat Badan')
+plt.ylabel('Jumlah Kalori')
+plt.show()
+
+print("Dengan menggunakan data dari Tabel diatas")
+gender = input("Masukkan jenis kelamin (pilih 'L' atau 'P'): ")
+berat_badan = float(input("Masukkan berat badan: "))
+jumlah_kalori = float(input("Masukkan jumlah kalori yang dikonsumsi: "))
+
+if gender == "P":
+    if berat_badan < 43 and jumlah_kalori < 1850:
+        print("Disarankan untuk mengkonsumsi makanan banyak kalori")
+    elif berat_badan > 53 and jumlah_kalori > 2100:
+        print("Disarankan mengurangi konsumsi kalori")
+    else:
+        print("Anda sehat")
+elif gender == "L":
+    if berat_badan < 48 and jumlah_kalori < 1900:
+        print("Disarankan untuk mengkonsumsi makanan banyak kalori")
+    elif berat_badan > 58 and jumlah_kalori > 2299:
+        print("Disarankan mengurangi konsumsi kalori")
+    else:
+        print("Anda sehat")
+else:
+    print("Masukkan jenis kelamin yang valid (pria atau wanita)")
+
+#import numpy as np
+#from sklearn.linear_model import LinearRegression (Jika library sudah ada tidak perlu dipanggil lagi)
+
+# Persiapan data
+X = np.array([[89], [60], [48], [72], [85], [74], [63], [47], [56], [54], [42], [49], [51], [81], [46], [91], [84]])  # Variabel independen
+y = np.array([2480, 2120, 1827, 2108, 2447, 2211, 2062, 1750, 1810, 1770, 1850, 1853, 1800, 2221, 1900, 2498, 2340])  # Variabel dependen
+
+# Membuat model regresi linear
+regressor = LinearRegression()
+regressor.fit(X, y)
+
+# Mendapatkan koefisien regresi
+koefisien = regressor.coef_
+intersep = regressor.intercept_
+
+# Mencetak persamaan regresi linear
+print("Persamaan regresi linear:")
+print("y =", koefisien[0], "* x +", intersep)
